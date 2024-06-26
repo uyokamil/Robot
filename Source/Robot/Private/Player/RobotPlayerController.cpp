@@ -6,6 +6,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Player/MovementInputInterface.h"
+#include "Camera/CameraComponent.h"
 
 ARobotPlayerController::ARobotPlayerController()
 {
@@ -13,6 +15,24 @@ ARobotPlayerController::ARobotPlayerController()
 
 //////////////////////////////////////////////////////////////////////////
 // Input
+
+void ARobotPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (!IsValid(GetPawn())) return;
+
+	IMovementInputInterface* MovementInputInterface = Cast<IMovementInputInterface>(GetPawn());
+	if (MovementInputInterface)
+	{
+		// Set control rotation to match the camera
+		UCameraComponent* CameraComponent = MovementInputInterface->GetCamera();
+		if (CameraComponent)
+		{
+			SetControlRotation(CameraComponent->GetComponentRotation());
+		}
+	}
+}
 
 void ARobotPlayerController::SetupInputComponent()
 {
@@ -35,10 +55,21 @@ void ARobotPlayerController::SetupInputComponent()
 	}
 }
 
+
+
 void ARobotPlayerController::Move(const FInputActionValue& Value)
 {
+	if (IsValid(GetPawn()))
+	{
+		IMovementInputInterface* MovementInputInterface = Cast<IMovementInputInterface>(GetPawn());
+		if (MovementInputInterface)
+		{
+			MovementInputInterface->Move(Value);
+		}
+	}
 }
 
 void ARobotPlayerController::Look(const FInputActionValue& Value)
 {
+	// implement for camera
 }

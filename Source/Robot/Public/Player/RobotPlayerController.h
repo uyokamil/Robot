@@ -18,6 +18,7 @@ class ROBOT_API ARobotPlayerController : public APlayerController
 public:
 	ARobotPlayerController();
 
+	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 
 private:
@@ -44,6 +45,13 @@ private:
 	//////////////////////////////
 	/*		FUNCTIONS			*/
 	//////////////////////////////
+
+	// TODO: Implement function for swapping characters
+	/*
+	* @brief Swaps the character the player is controlling.
+	* This would need to swap control rotation and posessed pawn.
+	* Something about switching out ability system abilities as well in here.
+	*/
 
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
