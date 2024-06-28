@@ -48,3 +48,36 @@ void ARobotCharacter::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("No AbilitySystemComponent found in %s. Error!"), *GetName());
 	}
 }
+
+void ARobotCharacter::Move(const FInputActionValue& Value)
+{
+	// Input
+	FVector2D MovementVector = Value.Get<FVector2D>();
+
+	// Move the character
+	if (IsValid(Controller))
+	{
+		// Get forward vector from Control Rotation
+		const FRotator Rotation = Controller->GetControlRotation();
+		const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+		// Get forward vector from rotation
+		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+		// Get right vector from rotation
+		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+		// Add movement
+		AddMovementInput(ForwardDirection, MovementVector.Y);
+		AddMovementInput(RightDirection, MovementVector.X);
+	}
+}
+
+void ARobotCharacter::Look(const FInputActionValue& Value)
+{
+}
+
+UCameraComponent* ARobotCharacter::GetCamera() const
+{
+	return GetFollowCamera();
+}

@@ -7,6 +7,8 @@
 
 #include "AbilitySystemInterface.h"
 
+#include "Player/MovementInputInterface.h"
+
 #include "RobotCharacter.generated.h"
 
 class USpringArmComponent;
@@ -16,7 +18,7 @@ class UAbilitySystemComponent;
 class URobotAttributeSet;
 
 UCLASS(config=Game)
-class ARobotCharacter : public ACharacter, public IAbilitySystemInterface
+class ARobotCharacter : public ACharacter, public IAbilitySystemInterface, public IMovementInputInterface
 {
 	GENERATED_BODY()
 
@@ -38,6 +40,10 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 protected:
+	//////////////////////////////
+	/*	VARIABLES & PARAMETERS	*/
+	//////////////////////////////
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GameplayAbilitySystem", meta = (AllowPrivateAccess = "true"))
 	UAbilitySystemComponent* AbilitySystemComponent;
 
@@ -58,4 +64,16 @@ private:
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FollowCamera;
+
+	//////////////////////////////
+	/*		FUNCTIONS			*/
+	//////////////////////////////
+
+	/** Called for movement input */
+	virtual void Move(const FInputActionValue& Value) override;
+	virtual void Look(const FInputActionValue& Value) override;
+
+	//////////////////////////////
+
+	virtual UCameraComponent* GetCamera() const override;
 };
