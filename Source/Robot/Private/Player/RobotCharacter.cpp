@@ -36,7 +36,7 @@ ARobotCharacter::ARobotCharacter()
 
 void ARobotCharacter::BeginPlay()
 {
-	// Call the base class  
+	// Call the base class
 	Super::BeginPlay();
 
 	if (IsValid(AbilitySystemComponent))
